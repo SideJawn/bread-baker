@@ -36,8 +36,16 @@ def create_user():
 
     return response
 
+#Authenticates the user
+@app.route('/creds/<username>', methods=['GET'])
+def get_auth(username = None):
+    endpoint = '/creds/' + username
+    response = send_to_oven(endpoint, 'GET')
+    
+    return response
+
 #Communicates with oven API
-def send_to_oven(endpoint, request_type, payload):
+def send_to_oven(endpoint, request_type, payload = None):
     updated_oven_url = oven_url + endpoint
     r = ''
     try:
