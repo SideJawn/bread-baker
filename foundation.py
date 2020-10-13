@@ -44,6 +44,14 @@ def get_auth(username = None):
     
     return response
 
+#Gets user profile data
+@app.route('/user/<user_id>/profile', methods=['GET'])
+def get_user_profile(user_id = None):
+    endpoint = '/user/' + user_id + '/profile'
+    response = send_to_oven(endpoint, 'GET')
+    
+    return response
+
 #Communicates with oven API
 def send_to_oven(endpoint, request_type, payload = None):
     updated_oven_url = oven_url + endpoint
