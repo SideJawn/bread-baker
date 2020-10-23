@@ -75,6 +75,15 @@ def update_user_profile(user_id = None):
     
     return response
 
+#Change User Status
+@app.route('/user/<user_id>/profile/status', methods=['PUT'])
+def update_user_status(user_id = None):
+    endpoint = '/user/' + user_id + '/profile/status'
+    status = request.get_json()['data']
+    response = send_to_oven(endpoint, 'PUT', status)
+    
+    return response
+
 #Communicates with oven API
 def send_to_oven(endpoint, request_type, payload = None):
     updated_oven_url = oven_url + endpoint
