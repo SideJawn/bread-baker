@@ -28,9 +28,8 @@ def create_user():
         new_creds = {'salt': salt, 'hashed_pass': hashed_pass}
         del user['password']
         user.update(new_creds)
-        oven_ready_dict = {'data': user}
 
-        response = send_to_oven('/user', 'PUT', oven_ready_dict)
+        response = send_to_oven('/user', 'PUT', user)
     else:
         response = { 'status_code': 'Password is missing' }
 
@@ -64,6 +63,15 @@ def get_auth(username = None):
 def get_user_profile(user_id = None):
     endpoint = '/user/' + user_id + '/profile'
     response = send_to_oven(endpoint, 'GET')
+    
+    return response
+
+#Gets data to update the user profile
+@app.route('/user/<user_id>/profile', methods=['PUT'])
+def update_user_profile(user_id = None):
+    endpoint = '/user/' + user_id + '/profile'
+    user = request.get_json()['data']
+    response = send_to_oven(endpoint, 'PUT', user)
     
     return response
 
