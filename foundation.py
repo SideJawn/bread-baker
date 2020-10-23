@@ -37,9 +37,32 @@ def create_user():
     return response
 
 #Authenticates the user
-@app.route('/creds/<username>', methods=['GET'])
+@app.route('/creds/<username>', methods=['POST'])
 def get_auth(username = None):
     endpoint = '/creds/' + username
+    creds = request.get_json()['data']
+    entered_pass = creds['password']
+
+    oven_response = send_to_oven(endpoint, 'GET')
+    if 'results' in oven_response:
+        db_creds = oven_response['results'][0]
+        db_pass = db_creds['password']
+        salt = db_creds['salt']
+        salted_pass = entered_pass + salt
+        hashed_pass = hashlib.sha256(salted_pass.encode()).hexdigest()
+        if hashed_pass == db_pass:
+            response = {'auth_status': 'AUTHORIZED'}
+        else:
+            response = {'auth_status': 'UNAUTHORIZED'}
+    else:
+        return oven_response
+    
+    return response
+
+#Gets user profile data
+@app.route('/user/<user_id>/profile', methods=['GET'])
+def get_user_profile(user_id = None):
+    endpoint = '/user/' + user_id + '/profile'
     response = send_to_oven(endpoint, 'GET')
     
     return response
