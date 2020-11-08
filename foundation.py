@@ -12,6 +12,13 @@ def get_projects():
     
     return response
 
+#Loads all category names
+@app.route('/categories', methods=['GET'])
+def get_categories():
+    response = send_to_oven('/categories', 'GET')
+    
+    return response
+
 #Creates a hashed salted password for new users
 @app.route('/user', methods=['PUT'])
 def create_user():
@@ -103,7 +110,10 @@ def send_to_oven(endpoint, request_type, payload = None):
             json_payload = json.dumps(payload)
             r = requests.put(updated_oven_url, headers= header, data=json_payload)
         elif request_type == 'GET':
-            r = requests.get(updated_oven_url, params=payload)
+            if payload is not None:
+                r = requests.get(updated_oven_url, params=payload)
+            else:
+                r = requests.get(updated_oven_url)
         response = r.json()
     except requests.ConnectionError as err:
         print(err)
