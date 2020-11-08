@@ -82,6 +82,14 @@ def update_user_profile(user_id = None):
     
     return response
 
+#Searches for basic user info by email
+@app.route('/user/<user_email>/basic', methods=['GET'])
+def get_user_basic(user_email = None):
+    endpoint = '/user/' + user_email + '/basic'
+    response = send_to_oven(endpoint, 'GET')
+
+    return response
+
 #Change User Status
 @app.route('/user/<user_id>/profile/status', methods=['PUT'])
 def update_user_status(user_id = None):
@@ -110,10 +118,7 @@ def send_to_oven(endpoint, request_type, payload = None):
             json_payload = json.dumps(payload)
             r = requests.put(updated_oven_url, headers= header, data=json_payload)
         elif request_type == 'GET':
-            if payload is not None:
-                r = requests.get(updated_oven_url, params=payload)
-            else:
-                r = requests.get(updated_oven_url)
+            r = requests.get(updated_oven_url)
         response = r.json()
     except requests.ConnectionError as err:
         print(err)
