@@ -84,6 +84,15 @@ def update_user_status(user_id = None):
     
     return response
 
+#Create a project
+@app.route('/project', methods=['PUT'])
+def create_project():
+    endpoint = '/project'
+    project = request.get_json()['data']
+    response = send_to_oven(endpoint, 'PUT', project)
+    
+    return response
+
 #Communicates with oven API
 def send_to_oven(endpoint, request_type, payload = None):
     updated_oven_url = oven_url + endpoint
