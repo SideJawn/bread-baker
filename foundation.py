@@ -108,6 +108,24 @@ def create_project():
     
     return response
 
+#Updates project general info
+@app.route('/project/<project_id>', methods=['PUT'])
+def update_project(project_id = None):
+    endpoint = '/project/' + project_id
+    project = request.get_json()['data']
+    response = send_to_oven(endpoint, 'PUT', project)
+    
+    return response
+
+#Adds existing and recruiting contributors to project
+@app.route('/project/<project_id>/contributors', methods=['PUT'])
+def add_project_contributors(project_id = None):
+    endpoint = '/project/' + project_id + '/contributors'
+    project = request.get_json()['data']
+    response = send_to_oven(endpoint, 'PUT', project)
+    
+    return response
+
 #Communicates with oven API
 def send_to_oven(endpoint, request_type, payload = None):
     updated_oven_url = oven_url + endpoint
