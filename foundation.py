@@ -19,7 +19,7 @@ def get_categories():
     
     return response
 
-#Creates a hashed salted password for new users
+#Creates a user
 @app.route('/user', methods=['PUT'])
 def create_user():
     user = request.get_json()['data']
