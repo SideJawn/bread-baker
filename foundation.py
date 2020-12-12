@@ -117,7 +117,7 @@ def update_project(project_id = None):
     
     return response
 
-#Adds existing and recruiting contributors to project
+#Updates project contributors
 @app.route('/project/<project_id>/contributors', methods=['PUT'])
 def add_project_contributors(project_id = None):
     endpoint = '/project/' + project_id + '/contributors'
